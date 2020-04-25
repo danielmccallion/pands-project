@@ -2,6 +2,7 @@
 # Read the Fisher's Iris data set
 # Write a summary of each variable to a single text file
 # Create histogram of each variable
+# Output scatter plot of each pair of variables
 
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -22,6 +23,19 @@ def write_summary(file_to_write, df):
         f.write(str(df.describe()))
         
 
+# Function to output a scatter plot for each set of variables
+def scatter_plot_pair(df):
+    for data_variable in data_variables:
+        for data_variable2 in data_variables:
+            if data_variable2 == data_variable:
+                continue
+            plt.clf()
+            plt.plot(df[data_variable], df[data_variable2], "b.")
+            scatter_plot_title = f"{data_variable} vs {data_variable2}"
+            plt.title(scatter_plot_title)
+            plt.savefig(f"{scatter_plot_title}.png")
+
+
 # Name of each variable in the dataset
 data_variables = ("sepal_length", "sepal_width", "petal_length", "petal_width")
 
@@ -36,3 +50,6 @@ write_summary(summary_file, iris_df)
 
 # Create histogram for each variable
 create_histograms(iris_df)
+
+# Output scatter plot each set of variables
+scatter_plot_pair(iris_df)
