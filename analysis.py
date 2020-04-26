@@ -6,6 +6,7 @@
 
 import pandas as pd
 import matplotlib.pyplot as plt
+import seaborn as sns
 
 
 # Function to create a histogram of each variable
@@ -36,6 +37,20 @@ def scatter_plot_pair(df):
             plt.savefig(f"{scatter_plot_title}.png")
 
 
+# Function to output a scatter plot for each set of variables using the seaborn library
+def scatter_plot_pair_seaborn(df):
+    for data_variable in data_variables:
+        for data_variable2 in data_variables:
+            if data_variable2 == data_variable:
+                continue
+            plot = sns.scatterplot(x=data_variable, y=data_variable2, hue="class", style="class",
+            data=df)
+            scatter_plot_title = f"{data_variable} vs {data_variable2}"
+            plot.set_title(scatter_plot_title)
+            plot.get_figure().savefig(f"{scatter_plot_title}.png")
+            plot.get_figure().clf() 
+
+
 # Name of each variable in the dataset
 data_variables = ("sepal_length", "sepal_width", "petal_length", "petal_width")
 
@@ -52,4 +67,5 @@ write_summary(summary_file, iris_df)
 create_histograms(iris_df)
 
 # Output scatter plot each set of variables
-scatter_plot_pair(iris_df)
+scatter_plot_pair_seaborn(iris_df)
+#scatter_plot_pair(iris_df)
