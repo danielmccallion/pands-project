@@ -22,7 +22,7 @@ def write_summary(file_to_write, df):
     with open(file_to_write, "wt") as f:
         # Write summary of data frame to file
         f.write(str(df.describe()))
-        
+
 
 # Function to output a scatter plot for each set of variables
 def scatter_plot_pair(df):
@@ -51,21 +51,40 @@ def scatter_plot_pair_seaborn(df):
             plot.get_figure().clf() 
 
 
+# Read data from csv to pandas dataframe
+def open_csv_to_dataframe(file_to_open):        
+    try:
+        df = pd.read_csv(file_to_open)
+        return df
+    # If unable to open csv file, display message to state file not found
+    except FileNotFoundError:
+        print(f"File {file_to_open} does not exist.")
+
+
 # Name of each variable in the dataset
 data_variables = ("sepal_length", "sepal_width", "petal_length", "petal_width")
 
 # File to output variable summaries to
 summary_file = "variable_summary.txt"
 
+# Csv file that contains the Iris dataset
+iris_csv_file = "iris.csv"
+
 # Read data from csv to pandas dataframe
-iris_df = pd.read_csv("iris.csv")
+iris_df = open_csv_to_dataframe(iris_csv_file)
 
-# Create summary file on each variable
-write_summary(summary_file, iris_df)
+# If iris datafile found and contains data perform analysis
+if not iris_df.empty:
+    # Create summary file on each variable
+    write_summary(summary_file, iris_df)
 
-# Create histogram for each variable
-create_histograms(iris_df)
+    # Create histogram for each variable
+    create_histograms(iris_df)
 
-# Output scatter plot each set of variables
-scatter_plot_pair_seaborn(iris_df)
-#scatter_plot_pair(iris_df)
+    # Output scatter plot each set of variables
+    scatter_plot_pair_seaborn(iris_df)
+# If unable to find iris datafile display message to state analysis not being performed
+else:
+    print("Unable to perform analysis without data.")
+    
+print("Script Complete!")
