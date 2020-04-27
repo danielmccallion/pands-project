@@ -3,6 +3,7 @@
 # Write a summary of each variable to a single text file
 # Create histogram of each variable
 # Output scatter plot of each pair of variables
+# Outputs a paiplot to allow easily viewing each pair of variable at once
 
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -51,6 +52,13 @@ def scatter_plot_pair_seaborn(df):
             plot.get_figure().clf() 
 
 
+# Use seaborn to create a pair plot to plot each pair of variable and the univariate distribution on the diagonal axis
+# all at once and very easily
+def pair_plot_seaborn(df):
+    plot = sns.pairplot(df, hue="class")
+    plot.savefig(f"pairplot.png")
+
+
 # Read data from csv to pandas dataframe
 def open_csv_to_dataframe(file_to_open):        
     try:
@@ -83,6 +91,10 @@ if not iris_df.empty:
 
     # Output scatter plot each set of variables
     scatter_plot_pair_seaborn(iris_df)
+
+    # Output pairplot to easliy view each pair of variables
+    pair_plot_seaborn(iris_df)
+
 # If unable to find iris datafile display message to state analysis not being performed
 else:
     print("Unable to perform analysis without data.")
