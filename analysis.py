@@ -19,9 +19,24 @@ def create_histograms(df):
 
 
 # Function to write a summary of each variable to a single text file
+def write_summary_old(file_to_write, df):
+    with open(file_to_write, "wt") as f:
+        # Write summary of data frame to file
+        f.write(str(df.describe()))
+
+
+# Function to write a summary of each variable to a single text file
 def write_summary(file_to_write, df):
     with open(file_to_write, "wt") as f:
         # Write summary of data frame to file
+        # Describing the data set, its size, shape and columns
+        f.write("Summary of the Dataset\n\n")
+        f.write(f"Size of the dataset: {df.size}\n\n")
+        f.write(f"Shape of the dataset: {df.shape}\n\n")
+        f.write(f"Columns of the dataset:\n{df.columns.values}\n\n")
+        f.write(f"Samples per class of flower:\n{df['class'].value_counts()}\n\n")
+
+        f.write("Statistics for the dataset:\n")
         f.write(str(df.describe()))
 
 

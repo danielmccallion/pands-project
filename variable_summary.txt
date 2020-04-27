@@ -1,3 +1,19 @@
+Summary of the Dataset
+
+Size of the dataset: 745
+
+Shape of the dataset: (149, 5)
+
+Columns of the dataset:
+['sepal_length' 'sepal_width' 'petal_length' 'petal_width' 'class']
+
+Samples per class of flower:
+Iris-versicolor    50
+Iris-virginica     50
+Iris-setosa        49
+Name: class, dtype: int64
+
+Statistics for the dataset:
        sepal_length  sepal_width  petal_length  petal_width
 count    149.000000   149.000000    149.000000   149.000000
 mean       5.848322     3.051007      3.774497     1.205369
