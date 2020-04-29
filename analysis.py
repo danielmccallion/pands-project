@@ -39,6 +39,12 @@ def write_summary(file_to_write, df):
         f.write("Statistics for the dataset:\n")
         f.write(str(df.describe()))
 
+        # Get statistics for each class in the dataframe
+        for dataset_class in df["class"].unique():
+            class_df=df[df["class"]==dataset_class]
+            f.write(f"\n\nStatistics for {dataset_class} class:\n")
+            f.write(str(class_df.describe()))  
+
 
 # Function to output a scatter plot for each set of variables
 def scatter_plot_pair(df):
