@@ -8,8 +8,8 @@ Columns of the dataset:
 ['sepal_length' 'sepal_width' 'petal_length' 'petal_width' 'class']
 
 Samples per class of flower:
-Iris-virginica     50
 Iris-setosa        50
+Iris-virginica     50
 Iris-versicolor    50
 Name: class, dtype: int64
 

@@ -3,7 +3,7 @@
 # Write a summary of each variable to a single text file
 # Create histogram of each variable
 # Output scatter plot of each pair of variables
-# Outputs a paiplot to allow easily viewing each pair of variable at once
+# Outputs a pairplot to allow easily viewing each pair of variable at once
 
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -11,10 +11,52 @@ import seaborn as sns
 
 
 # Function to create a histogram of each variable
-def create_histograms(df):
+def create_histograms_old(df):
     for data_variable in data_variables:
         plt.hist(df[data_variable])
         plt.savefig(f"{data_variable}.png")
+        plt.clf()
+
+
+# Function to create a histogram of each variable
+def create_histograms(df):
+    for data_variable in data_variables:
+
+        # Colours for each class of Iris with transparancy at half so each can be seen on one graph
+        colours_for_hist = ((1, 0, 0, 0.5), (0, 1, 0, 0.5), (0, 0, 1, 0.5))
+        # To keep track of which colour to use
+        colour_counter = 0        
+
+        # Plot each dataframe for each type of Iris Flower
+        for class_df in iris_dataframes_dict:
+
+            # Get dataframe for each type of Iris Flower
+            df_to_plot = iris_dataframes_dict[class_df][data_variable]
+
+            # Plot a histogram of data applying a semi-transparent colour and labeling the data
+            # the same name as the Iris class it belongs to
+            plt.hist(df_to_plot, fc=colours_for_hist[colour_counter], label=class_df)
+
+            # Increase the counter to change the next colour
+            colour_counter += 1
+        
+        # Create a legend to the top right outside the graph, with a shadow and title the
+        # legend "Class"
+        plt.legend(bbox_to_anchor=(1.05, 1), loc="upper left", shadow=True, title="Class")
+
+        # Get the title and labels for the Histogram from the dictionary tied to the
+        # variable name
+        plot_title = data_variables_labels[data_variable]["title"]
+        plot_label = data_variables_labels[data_variable]["label"]
+
+        # Add a title to the Histogram and increase the font size to 18
+        plt.suptitle(plot_title, fontsize=18)
+        # Add a label to the x-axis and increase the font size to 12
+        plt.xlabel(plot_label, fontsize=12)
+        # Save the Histogram as a png file with the legend correctly drawn and minimal extra
+        # white around sides
+        plt.savefig(f"{plot_title}.png", bbox_inches="tight")
+        # Clear the canvas
         plt.clf()
 
 
@@ -90,8 +132,39 @@ def open_csv_to_dataframe(file_to_open):
         print(f"File {file_to_open} does not exist.")
 
 
+# Seperate each dataframe by a value and save each new dataframe to a dict
+def seperate_dataframes_by_value(df, value="class"):
+    # Iterate each unique value in a dataframes column
+    for dataset_class in df[value].unique():
+        class_df=df[df[value]==dataset_class]
+        iris_dataframes_dict[dataset_class] = class_df
+             
+
+# Dictionary to hold each seperate class in their own dataframe  
+iris_dataframes_dict = {}
+
 # Name of each variable in the dataset
 data_variables = ("sepal_length", "sepal_width", "petal_length", "petal_width")
+
+# Dictionary to give each variable a useable title and label for the graphs
+data_variables_labels = {
+    "sepal_length": {
+        "label": "Sepal length in cm",
+        "title": "Sepal Length"
+        },
+    "sepal_width": {
+        "label": "Sepal width in cm",
+        "title": "Sepal Width"
+        },
+    "petal_length": {
+        "label": "Petal length in cm",
+        "title": "Petal Length"
+        },
+    "petal_width": {
+        "label": "Petal width in cm",
+        "title": "Petal Width"
+        }
+}
 
 # File to output variable summaries to
 summary_file = "variable_summary.txt"
@@ -104,6 +177,10 @@ iris_df = open_csv_to_dataframe(iris_csv_file)
 
 # If iris datafile found and contains data perform analysis
 if not iris_df.empty:
+    
+    # Save a datframe for each class of Iris to a dictionary
+    seperate_dataframes_by_value(iris_df)
+
     # Create summary file on each variable
     write_summary(summary_file, iris_df)
 
